@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>User Registration</title>
+    <style type="text/css">
+    label {
+        display: inline-block;
+        width: 200px;
+        margin: 5px;
+        text-align: left;
+    }
+    input[type=text], input[type=password], select {
+        display: inline-block;
+        width: 200px;
+    }
+    input[type=radio] {
+        margin-left: 45px;
+    }
+    input[type=checkbox] {
+        margin-right: 190px;
+    }
+    button {
+        padding: 5px;
+        margin: 10px;
+    }
+
+    .mandatory {
+    display: flex;
+    justify-content: flex-end; /* This will move the h6 to the right */
+}
+</style>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body style="background-color:#e9ecef">
+<div align="center">
+    <h6 style="color:red" class="mandatory">*mandatory fields</h6>
+    <h1 style="color:blue">Library Registration Form</h1>
+    <form action="#" th:action="@{/register}" method="post" th:object="${user}" class="form-control" style="background-color:#e9ecef" >
+
+        <label>Library Name*:</label>
+        <select th:field="*{library.id}" class="width:50%">
+            <option value="" selected>select</option>
+            <option  th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.lib_name}"></option>
+        </select>
+
+        <label>Subscription Type*:</label>
+<!--        <select id="subscriptionType" th:field="*{library.id}" class="form-control">-->
+            <select id="subscriptionType" name="subscriptionType" class="width:50%">
+
+            <option value="" selected>select</option>
+            <option  th:each="library : ${libraries}" th:value="${library.subscription_type}" th:text="${library.subscription_type}"></option>
+        </select>
+
+<!--        <label>Subscription Fee:</label>-->
+<!--        <input id="fee" th:field="*{subscription_fee}" type="text" class="form-control" readonly="readonly">-->
+
+        <label>Subscription Fee*:</label>
+<!--        <input id="subscriptionFee" th:field="*{library.subscription_fee}" type="text" class="form-control" readonly="readonly">-->
+        <input id="subscriptionFee" name="subscriptionFee" type="text" class="form-control" readonly="readonly" th:value="${subscriptionFee}">
+
+        <!--        <select th:field="*{library}" class="form-control">-->
+<!--                  <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.subscription_fee}"></option>-->
+<!--               </select>-->
+
+
+<!-- </form>-->
+
+</br></br>
+
+<!--  <form action="#" th:action="@{/register}" method="post" th:object="${user}">-->
+        <label>Full name*:</label>
+        <input type="text" th:field="*{name}" pattern="[a-zA-Z ]{3,}" placeholder="Please enter alphabetic characters only"  required/><br/>
+
+        <label>E-mail*:</label>
+        <input type="text" th:field="*{email}" required/><br/>
+
+        <label>Mobile Number*:</label>
+        <input type="text" th:field="*{mobilenumber}" pattern="[0-9]{10}" placeholder="Enter 10-digit mobile number" required/><br/>
+
+        <label>Birthday (yyyy-mm-dd)*:</label>
+        <input type="text" th:field="*{birthday}" required/><br/>
+
+
+
+        <label>Gender*:</label>
+        <input type="radio" th:field="*{gender}" value="Male" />Male
+        <input type="radio" th:field="*{gender}" value="Female" />Female<br/>
+
+<!--        <label>Library Name:</label>-->
+<!--        <select th:field="*{library}" class="form-control">-->
+<!--            <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.lib_name}"></option>-->
+<!--        </select>-->
+
+<!--        <label>Subscription Type:</label>-->
+<!--        <select th:field="*{library}" class="form-control">-->
+<!--            <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.subscription_type}"></option>-->
+<!--        </select>-->
+
+<!--        <label>Subscription Fee:</label>-->
+<!--        <input id="fee" th:field="*{subscription_fee}" type="text" class="form-control" readonly="readonly">-->
+
+
+<!--        <label>Subscription Fee:</label>-->
+<!--        <select th:field="*{library}" class="form-control">-->
+<!--            <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.subscription_fee}"></option>-->
+<!--        </select>-->
+
+        <br/>
+
+
+
+        <label>Upload Photo*:</label>
+        <input type="file" th:field="*{image}" required/><br/></br>
+
+        <button type="submit">Register</button>
+        <button type="reset">Reset</button>
+    </form>
+</div>
+
+
+
+<script th:inline="javascript">
+    document.getElementById('subscriptionType').addEventListener('change', function () {
+        var selectedType = this.value;
+        console.log("selected subscription type:",selectedType);
+        var subscriptionFee = document.getElementById('subscriptionFee');
+        var libraryName = document.getElementById('libraryName');
+console.log(subscriptionFee);
+        // Make a fetch request to the server to get the fee
+        fetch('/get-fee?subscription_type=' + selectedType)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+             console.log('Received Subscription Fee:', data);
+                subscriptionFee.value = data;
+
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                subscriptionFee.innerText = '--';
+            });
+    });
+</script>
+
+
+
+</body>
+</html>
