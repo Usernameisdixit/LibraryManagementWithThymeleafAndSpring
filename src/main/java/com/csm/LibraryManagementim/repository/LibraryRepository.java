@@ -17,6 +17,16 @@ public interface LibraryRepository extends JpaRepository<Library,Long> {
     Optional<Double> findFeeBySubscriptionType(@Param("subscription_type") String subscription_type);
 
 
+    @Query("SELECT l FROM Library l WHERE LOWER(l.lib_name) LIKE %:lib_name%")
+    List<Library> findByLib_nameContainingIgnoreCase(@Param("lib_name") String lib_name);
+
+    @Query("SELECT l FROM Library l WHERE LOWER(l.subscription_type) LIKE %:subscription_type%")
+    List<Library> findByLib_TypeContainingIgnoreCase(@Param("subscription_type") String subscription_type);
+
+    
+    
+    @Query("SELECT l FROM Library l WHERE LOWER(l.lib_name) LIKE %:lib_name% AND LOWER(l.subscription_type) LIKE %:subscription_type%")
+    List<Library> findByLib_nameAndSubscription_typeContainingIgnoreCase(@Param("lib_name") String lib_name, @Param("subscription_type") String subscription_type);
         //Optional<Library> findFeeBySubscriptionType(String subscription_type);
 
 }

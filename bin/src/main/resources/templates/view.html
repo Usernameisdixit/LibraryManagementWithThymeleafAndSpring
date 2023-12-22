@@ -22,38 +22,6 @@
 <body>
 <h1 style="color:blue">Registration Details:</h1>
 
-<form th:action="@{/filerResults}" method="get" th:object="${libraries1}">
-   <!-- <input type="text" name="lib_name" placeholder="Search by Library Name" th:value="${lib_name}" /> -->
-    
-    <label>Library Name*:</label>
-        <select name="lib_name" class="width:50%s">
-            <option value="" selected>select</option>
-            <option  th:each="library : ${libraries1}" th:text="${library.lib_name}" th:value="${library.lib_name}"></option>
-        </select>
-    
-  <!--  <input type="text" name="subscription_type" placeholder="Search by Library Type" th:value="${subscription_type}" /> -->
-  
-  <label>Subscription Type*:</label>
-        <select name="subscription_type" class="width:50%">
-            <option value="" selected>select</option>
-            <option  th:each="library : ${libraries1}" th:text="${library.subscription_type}" th:value="${library.subscription_type}"></option>
-        </select>
-  
-    <button type="submit">Search</button>
-    <button type="submit" id="resetButton">Reset</button>
-    
-    
-    
-    <!-- Add this script block in your HTML, preferably at the end of the body -->
-
-
-</form>
-
-<br/>
-
-
-
-
 <table>
     <thead>
     <tr>
@@ -61,7 +29,7 @@
         <th>Name</th>
         <th>Email</th>
         <th>Mobile Number</th>
-        <th>Age</th>
+       <th>Age</th>
         <th>Regd. Date</th>
         <th>Image</th>
         <th>Libraray Name</th>
